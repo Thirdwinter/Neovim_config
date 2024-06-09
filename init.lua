@@ -16,10 +16,7 @@ if not pcall(require, "lazy") then
 end
 
 require "lazy_setup"
--- local config = { import = "config" }
 require "config.config_init"
--- require "polish"
--- require "keymap"
-vim.cmd.colorscheme "monet"
+-- vim.cmd.colorscheme "monet"
 --使用系统剪切板
-vim.opt.clipboard = "unnamedplus"
+-- vim.opt.clipboard = "unnamedplus"
