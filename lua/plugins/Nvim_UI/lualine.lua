@@ -257,7 +257,7 @@ return {
           {
             "fancy_lsp_servers",
             icon = " LSP:",
-            color = { fg = "#000000" },
+            color = { fg = "#000000", gui = "bold" },
           },
 
           {
