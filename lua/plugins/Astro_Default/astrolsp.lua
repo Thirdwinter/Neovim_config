@@ -1,4 +1,4 @@
-if true then return {} end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
+-- if true then return {} end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
 
 -- AstroLSP allows you to customize the features in AstroNvim's LSP configuration engine
 -- Configuration documentation can be found with `:h astrolsp`
@@ -14,9 +14,10 @@ return {
     features = {
       autoformat = true, -- enable or disable auto formatting on start
       codelens = true, -- enable/disable codelens refresh on start
-      inlay_hints = false, -- enable/disable inlay hints on start
+      inlay_hints = true, -- enable/disable inlay hints on start
       semantic_tokens = true, -- enable/disable semantic token highlighting
     },
+
     -- customize lsp formatting options
     formatting = {
       -- control auto formatting on save
@@ -25,6 +26,13 @@ return {
         allow_filetypes = { -- enable format on save for specified filetypes only
           "go",
           "rust",
+          "lua",
+          "python",
+          "java",
+          "json",
+          "yaml",
+          "vim",
+          "bash",
         },
         ignore_filetypes = { -- disable format on save for specified filetypes
           -- "python",
@@ -41,14 +49,28 @@ return {
     },
     -- enable servers that you already have installed without mason
     servers = {
-      -- "pyright"
-      "rust-analyzer",
+      "pyright",
+      "rust_analyzer",
       "gopls",
+      -- "lua_ls",
+      "clangd",
+      "r_language_server",
     },
     -- customize language server configuration options passed to `lspconfig`
     ---@diagnostic disable: missing-fields
     config = {
-      -- clangd = { capabilities = { offsetEncoding = "utf-8" } },
+      -- lua_ls = {
+      --   settings = {
+      --     Lua = {
+      --       hint = { enable = true, arrayIndex = "Disable" },
+      --     },
+      --   },
+      -- },
+      -- clangd = {
+      --   capabilities = {
+      --     offsetEncoding = "utf-8",
+      --   },
+      -- },
     },
     -- customize how language servers are attached
     handlers = {
@@ -58,6 +80,19 @@ return {
       -- the key is the server that is being setup with `lspconfig`
       -- rust_analyzer = false, -- setting a handler to false will disable the set up of that language server
       -- pyright = function(_, opts) require("lspconfig").pyright.setup(opts) end -- or a custom handler function can be passed
+      -- gopls = function(_, opts)
+      --   require("lspconfig").gopls.setup {
+      --     settings = {
+      --       gopls = {
+      --         analyses = {
+      --           unusedparams = true,
+      --         },
+      --         staticcheck = true,
+      --         gofumpt = true,
+      --       },
+      --     },
+      --   }
+      -- end, -- or a custom handler function can be passed
     },
     -- Configure buffer local auto commands to add when attaching a language server
     autocmds = {
