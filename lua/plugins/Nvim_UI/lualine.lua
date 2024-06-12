@@ -1,4 +1,4 @@
---- if true then return {} end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
+-- if true then return {} end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
 -- local colors = {
 --   bg = "#202328",
 --   fg = "#bbc2cf",
@@ -68,32 +68,32 @@ return {
         component_separators = "",
         section_separators = "",
         -- theme = "ayu_mirage",
-        theme = {
-          -- We are going to use lualine_c an lualine_x as left and
-          -- right section. Both are highlighted by c theme .  So we
-          -- are just setting default looks o statusline
-          normal = { c = { fg = colors.fg, bg = colors.bg } },
-          inactive = { c = { fg = colors.fg, bg = colors.bg } },
-        },
+        -- theme = {
+        --   -- We are going to use lualine_c an lualine_x as left and
+        --   -- right section. Both are highlighted by c theme .  So we
+        --   -- are just setting default looks o statusline
+        --   normal = { c = { fg = colors.fg, bg = colors.bg } },
+        --   inactive = { c = { fg = colors.fg, bg = colors.bg } },
+        -- },
       },
       sections = {
         -- these are to remove the defaults
         lualine_a = {},
         lualine_b = {},
+        lualine_c = {},
+        lualine_x = {},
         lualine_y = {},
         lualine_z = {},
         -- These will be filled later
-        lualine_c = {},
-        lualine_x = {},
       },
       inactive_sections = {
         -- these are to remove the defaults
         lualine_a = {},
         lualine_b = {},
-        lualine_y = {},
-        lualine_z = {},
         lualine_c = {},
         lualine_x = {},
+        lualine_y = {},
+        lualine_z = {},
       },
     }
 
@@ -103,21 +103,21 @@ return {
     -- Inserts a component in lualine_x at right section
     local function ins_right(component) table.insert(config.sections.lualine_x, component) end
 
-    ins_left {
-      function() return "▊" end,
-      color = { fg = colors.blue }, -- Sets highlighting of component
-      padding = { left = 0, right = 1 }, -- We don't need space before this
-    }
-
+    -- ins_left {
+    --   function() return "▊" end,
+    --   color = { fg = colors.blue }, -- Sets highlighting of component
+    --   padding = { left = 0, right = 0 }, -- We don't need space before this
+    -- }
     ins_left {
       -- mode component
-      function() return "󰀘" end,
+      -- function() return " " .. " 󰀘 " .. " " end,
+      function() return "󰀘 " end,
       color = function()
         -- auto change color according to neovims mode
         local mode_color = {
-          n = colors.red,
+          n = colors.blue,
           i = colors.green,
-          v = colors.blue,
+          v = colors.red,
           [""] = colors.blue,
           V = colors.blue,
           c = colors.magenta,
@@ -136,9 +136,9 @@ return {
           ["!"] = colors.red,
           t = colors.red,
         }
-        return { fg = mode_color[vim.fn.mode()] }
+        return { fg = mode_color[vim.fn.mode()], bg = "bg" }
       end,
-      padding = { right = 1 },
+      -- padding = { left = 1 },
     }
 
     ins_left {
@@ -150,18 +150,18 @@ return {
     ins_left {
       "filename",
       cond = conditions.buffer_not_empty,
-      color = { fg = colors.magenta, gui = "bold" },
+      -- color = { fg = colors.magenta, gui = "bold" },
     }
 
     ins_left {
       "diff",
       -- Is it me or the symbol for modified us really weird
-      symbols = { added = " ", modified = "󰝤 ", removed = " " },
-      diff_color = {
-        added = { fg = colors.green },
-        modified = { fg = colors.orange },
-        removed = { fg = colors.red },
-      },
+      symbols = { added = " ", modified = " ", removed = " " },
+      -- diff_color = {
+      --   added = { fg = colors.green },
+      --   modified = { fg = colors.orange },
+      --   removed = { fg = colors.red },
+      -- },
       cond = conditions.hide_in_width,
     }
 
@@ -171,24 +171,24 @@ return {
       "diagnostics",
       sources = { "nvim_diagnostic" },
       symbols = { error = " ", warn = " ", info = " " },
-      diagnostics_color = {
-        color_error = { fg = colors.red },
-        color_warn = { fg = colors.yellow },
-        color_info = { fg = colors.cyan },
-      },
+      -- diagnostics_color = {
+      --   color_error = { fg = colors.red },
+      --   color_warn = { fg = colors.yellow },
+      --   color_info = { fg = colors.cyan },
+      -- },
     }
 
     -- Insert mid section. You can make any number of sections in neovim :)
     -- for lualine it's any number greater then 2
-    ins_left {
-      function() return "%=" end,
-    }
+    -- ins_left {
+    --   function() return "%=" end,
+    -- }
 
-    ins_left {
+    ins_right {
       -- Lsp server name .
       "fancy_lsp_servers",
       icon = " LSP:",
-      color = { fg = "#93aff5", gui = "bold" },
+      -- color = { fg = "#93aff5", gui = "bold" },
     }
 
     -- Add components to right sections
@@ -196,7 +196,7 @@ return {
       "o:encoding", -- option component same as &encoding in viml
       fmt = string.upper, -- I'm not sure why it's upper case either ;)
       cond = conditions.hide_in_width,
-      color = { fg = colors.green, gui = "bold" },
+      -- color = { fg = colors.green, gui = "bold" },
     }
 
     ins_right {
@@ -207,8 +207,9 @@ return {
     }
 
     ins_right {
+      -- "location",
       "progress",
-      color = { fg = colors.fg, gui = "bold" },
+      -- color = { fg = colors.fg, gui = "bold" },
     }
 
     ins_right {
@@ -218,7 +219,7 @@ return {
     ins_right {
       function() return "▊" end,
       color = { fg = colors.blue },
-      padding = { left = 1 },
+      padding = { left = 0 },
     }
 
     -- Now don't forget to initialize lualine
