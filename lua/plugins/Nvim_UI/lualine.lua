@@ -136,7 +136,7 @@ return {
           ["!"] = colors.red,
           t = colors.red,
         }
-        return { fg = mode_color[vim.fn.mode()], bg = "bg" }
+        return { fg = mode_color[vim.fn.mode()] }
       end,
       -- padding = { left = 1 },
     }
@@ -217,9 +217,34 @@ return {
     }
 
     ins_right {
-      function() return "▊" end,
-      color = { fg = colors.blue },
-      padding = { left = 0 },
+      -- function() return "" end,
+      function() return " " end,
+      color = function()
+        -- auto change color according to neovims mode
+        local mode_color = {
+          n = colors.blue,
+          i = colors.green,
+          v = colors.red,
+          [""] = colors.blue,
+          V = colors.blue,
+          c = colors.magenta,
+          no = colors.red,
+          s = colors.orange,
+          S = colors.orange,
+          [""] = colors.orange,
+          ic = colors.yellow,
+          R = colors.violet,
+          Rv = colors.violet,
+          cv = colors.red,
+          ce = colors.red,
+          r = colors.cyan,
+          rm = colors.cyan,
+          ["r?"] = colors.cyan,
+          ["!"] = colors.red,
+          t = colors.red,
+        }
+        return { fg = mode_color[vim.fn.mode()] }
+      end,
     }
 
     -- Now don't forget to initialize lualine
