@@ -22,6 +22,30 @@
 --   end,
 -- }
 --
+local function apply_acrylic_effect(hex_color)
+  -- 去掉开头的 '#'
+  hex_color = hex_color:sub(2)
+
+  -- 将 16 进制颜色转换为 RGB 值
+  local r = tonumber(hex_color:sub(1, 2), 16) / 255
+  local g = tonumber(hex_color:sub(3, 4), 16) / 255
+  local b = tonumber(hex_color:sub(5, 6), 16) / 255
+
+  -- 应用亚克力效果
+  local r_acrylic = r * 0.9 + 0.1
+  local g_acrylic = g * 0.9 + 0.1
+  local b_acrylic = b * 0.9 + 0.1
+
+  -- 将 RGB 值转换回 16 进制颜色
+  local hex_acrylic = string.format(
+    "#%02X%02X%02X",
+    math.floor(r_acrylic * 255),
+    math.floor(g_acrylic * 255),
+    math.floor(b_acrylic * 255)
+  )
+
+  return hex_acrylic
+end
 return {
   "nvim-lualine/lualine.nvim",
   dependencies = {
@@ -38,7 +62,7 @@ return {
   -- stylua: ignore
   -- local colors = require "monet.palette".setup()
     local colors = {
-      bg       = "#081633",
+      bg       = 'bg',
       fg       = 'fg',
       yellow   = '#ECBE7B',
       cyan     = '#008080',
@@ -86,15 +110,15 @@ return {
         lualine_z = {},
         -- These will be filled later
       },
-      inactive_sections = {
-        -- these are to remove the defaults
-        lualine_a = {},
-        lualine_b = {},
-        lualine_c = {},
-        lualine_x = {},
-        lualine_y = {},
-        lualine_z = {},
-      },
+      -- inactive_sections = {
+      --   -- these are to remove the defaults
+      --   lualine_a = {},
+      --   lualine_b = {},
+      --   lualine_c = {},
+      --   lualine_x = {},
+      --   lualine_y = {},
+      --   lualine_z = {},
+      -- },
     }
 
     -- Inserts a component in lualine_c at left section
@@ -134,7 +158,7 @@ return {
           rm = colors.cyan,
           ["r?"] = colors.cyan,
           ["!"] = colors.red,
-          t = colors.red,
+          t = colors.cyan,
         }
         return { fg = mode_color[vim.fn.mode()] }
       end,

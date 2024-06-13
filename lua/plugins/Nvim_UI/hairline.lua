@@ -1,7 +1,9 @@
 if true then return {} end
+
 return {
   "rebelot/heirline.nvim",
-  opts = function(_, opts) opts.winbar = nil end,
+  -- enabled = false,
+  opts = function(_, opts) opts.tabline = nil end,
 }
 -- return {
 --   "rebelot/heirline.nvim",

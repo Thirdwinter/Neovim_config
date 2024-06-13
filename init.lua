@@ -19,5 +19,4 @@ require "lazy_setup"
 require "config.config_init"
 
 -- vim.cmd.colorscheme "monet"
---使用系统剪切板
--- vim.opt.clipboard = "unnamedplus"
+--使用系统剪切板-- vim.opt.clipboard = "unnamedplus"
