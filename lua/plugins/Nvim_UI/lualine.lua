@@ -22,36 +22,14 @@
 --   end,
 -- }
 --
-local function apply_acrylic_effect(hex_color)
-  -- 去掉开头的 '#'
-  hex_color = hex_color:sub(2)
-
-  -- 将 16 进制颜色转换为 RGB 值
-  local r = tonumber(hex_color:sub(1, 2), 16) / 255
-  local g = tonumber(hex_color:sub(3, 4), 16) / 255
-  local b = tonumber(hex_color:sub(5, 6), 16) / 255
-
-  -- 应用亚克力效果
-  local r_acrylic = r * 0.9 + 0.1
-  local g_acrylic = g * 0.9 + 0.1
-  local b_acrylic = b * 0.9 + 0.1
-
-  -- 将 RGB 值转换回 16 进制颜色
-  local hex_acrylic = string.format(
-    "#%02X%02X%02X",
-    math.floor(r_acrylic * 255),
-    math.floor(g_acrylic * 255),
-    math.floor(b_acrylic * 255)
-  )
-
-  return hex_acrylic
-end
 return {
   "nvim-lualine/lualine.nvim",
   dependencies = {
     "nvim-tree/nvim-web-devicons",
     "meuter/lualine-so-fancy.nvim",
   },
+  lazy = false,
+  priority = 1000,
   config = function()
     -- Eviline config for lualine
     -- Author: shadmansaleh
@@ -74,7 +52,8 @@ return {
       blue     = '#51afef',
       red      = '#ec5f67',
     }
-
+    -- local colors = require("tokyonight.colors").setup() -- pass in any of the config options as explained above
+    -- local util = require "tokyonight.util"
     local conditions = {
       buffer_not_empty = function() return vim.fn.empty(vim.fn.expand "%:t") ~= 1 end,
       hide_in_width = function() return vim.fn.winwidth(0) > 80 end,
@@ -84,6 +63,28 @@ return {
         return gitdir and #gitdir > 0 and #gitdir < #filepath
       end,
     }
+    local mode_color = {
+      n = colors.blue,
+      i = colors.green,
+      v = colors.red,
+      [""] = colors.blue,
+      V = colors.blue,
+      c = colors.magenta,
+      no = colors.red,
+      s = colors.orange,
+      S = colors.orange,
+      [""] = colors.orange,
+      ic = colors.yellow,
+      R = colors.violet,
+      Rv = colors.violet,
+      cv = colors.red,
+      ce = colors.red,
+      r = colors.cyan,
+      rm = colors.cyan,
+      ["r?"] = colors.cyan,
+      ["!"] = colors.red,
+      t = colors.red,
+    }
 
     -- Config
     local config = {
@@ -91,7 +92,7 @@ return {
         -- Disable sections and component separators
         component_separators = "",
         section_separators = "",
-        -- theme = "ayu_mirage",
+        theme = "tokyonight",
         -- theme = {
         --   -- We are going to use lualine_c an lualine_x as left and
         --   -- right section. Both are highlighted by c theme .  So we
@@ -127,39 +128,17 @@ return {
     -- Inserts a component in lualine_x at right section
     local function ins_right(component) table.insert(config.sections.lualine_x, component) end
 
-    -- ins_left {
-    --   function() return "▊" end,
-    --   color = { fg = colors.blue }, -- Sets highlighting of component
-    --   padding = { left = 0, right = 0 }, -- We don't need space before this
-    -- }
+    ins_left {
+      function() return "█" end,
+      color = { fg = mode_color[vim.fn.mode()] }, -- Sets highlighting of component
+      padding = { left = 0, right = 0 }, -- We don't need space before this
+    }
     ins_left {
       -- mode component
-      -- function() return " " .. " 󰀘 " .. " " end,
-      function() return "󰀘 " end,
+      function() return " " .. " 󰀘 " .. " " end,
+      -- function() return " 🙞 " end,
       color = function()
         -- auto change color according to neovims mode
-        local mode_color = {
-          n = colors.blue,
-          i = colors.green,
-          v = colors.red,
-          [""] = colors.blue,
-          V = colors.blue,
-          c = colors.magenta,
-          no = colors.red,
-          s = colors.orange,
-          S = colors.orange,
-          [""] = colors.orange,
-          ic = colors.yellow,
-          R = colors.violet,
-          Rv = colors.violet,
-          cv = colors.red,
-          ce = colors.red,
-          r = colors.cyan,
-          rm = colors.cyan,
-          ["r?"] = colors.cyan,
-          ["!"] = colors.red,
-          t = colors.cyan,
-        }
         return { fg = mode_color[vim.fn.mode()] }
       end,
       -- padding = { left = 1 },
@@ -242,33 +221,16 @@ return {
 
     ins_right {
       -- function() return "" end,
-      function() return " " end,
+      function() return "" .. " " .. "" end,
       color = function()
         -- auto change color according to neovims mode
-        local mode_color = {
-          n = colors.blue,
-          i = colors.green,
-          v = colors.red,
-          [""] = colors.blue,
-          V = colors.blue,
-          c = colors.magenta,
-          no = colors.red,
-          s = colors.orange,
-          S = colors.orange,
-          [""] = colors.orange,
-          ic = colors.yellow,
-          R = colors.violet,
-          Rv = colors.violet,
-          cv = colors.red,
-          ce = colors.red,
-          r = colors.cyan,
-          rm = colors.cyan,
-          ["r?"] = colors.cyan,
-          ["!"] = colors.red,
-          t = colors.red,
-        }
         return { fg = mode_color[vim.fn.mode()] }
       end,
+    }
+    ins_right {
+      function() return "█" end,
+      color = { fg = mode_color[vim.fn.mode()] }, -- Sets highlighting of component
+      padding = { left = 0, right = 0 }, -- We don't need space before this
     }
 
     -- Now don't forget to initialize lualine
